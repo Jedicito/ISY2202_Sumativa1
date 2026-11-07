@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments :: head('Inicio')}">
+    <meta charset="UTF-8">
+    <title>Inicio · Eventos Gamer</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+
+<main class="contenedor">
+
+    <section class="portada">
+        <h1>Encuentra tu próximo evento gamer</h1>
+        <p>Torneos, convenciones, LAN parties y lanzamientos en todo Chile, reunidos en un solo lugar.</p>
+        <p class="acciones">
+            <a class="boton" href="buscar.html" th:href="@{/buscar}">Buscar eventos</a>
+            <a sec:authorize="isAnonymous()" class="boton boton-secundario" href="login.html" th:href="@{/login}">Iniciar sesión</a>
+        </p>
+    </section>
+
+    <section class="seccion">
+        <h2>Próximos eventos</h2>
+        <div class="grilla">
+            <th:block th:each="e : ${proximos}">
+                <article th:replace="~{fragments :: tarjeta(${e})}"></article>
+            </th:block>
+        </div>
+        <p th:if="${#lists.isEmpty(proximos)}" class="vacio">No hay eventos próximos publicados.</p>
+    </section>
+
+    <section class="seccion">
+        <h2>Destacados</h2>
+        <div class="grilla">
+            <th:block th:each="e : ${destacados}">
+                <article th:replace="~{fragments :: tarjeta(${e})}"></article>
+            </th:block>
+        </div>
+        <p th:if="${#lists.isEmpty(destacados)}" class="vacio">No hay eventos destacados.</p>
+    </section>
+
+    <section class="seccion">
+        <h2>Avisos</h2>
+        <div class="avisos">
+            <img src="../static/img/auspiciador-1.jpg" th:src="@{/img/auspiciador-1.jpg}"
+                 alt="Aviso publicitario 1" width="728" height="90">
+            <img src="../static/img/auspiciador-2.jpg" th:src="@{/img/auspiciador-2.jpg}"
+                 alt="Aviso publicitario 2" width="728" height="90">
+        </div>
+    </section>
+
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

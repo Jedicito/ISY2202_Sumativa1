@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Iniciar sesión')}">
+    <meta charset="UTF-8">
+    <title>Iniciar sesión · Eventos Gamer</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+
+<main class="contenedor">
+    <section class="caja-login">
+        <h1>Iniciar sesión</h1>
+
+        <p th:if="${param.error}" class="mensaje mensaje-error">Usuario o contraseña incorrectos.</p>
+        <p th:if="${param.logout}" class="mensaje mensaje-exito">Cerraste sesión correctamente.</p>
+
+        <form method="post" action="#" th:action="@{/login}">
+            <label>Usuario
+                <input type="text" name="username" autocomplete="username" required autofocus>
+            </label>
+            <label>Contraseña
+                <input type="password" name="password" autocomplete="current-password" required>
+            </label>
+            <button type="submit" class="boton boton-ancho">Ingresar</button>
+        </form>
+    </section>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

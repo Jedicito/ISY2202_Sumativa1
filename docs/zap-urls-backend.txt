@@ -1,0 +1,8 @@
+http://localhost:8081/eventos
+http://localhost:8081/eventos?nombre=copa
+http://localhost:8081/eventos?categoria=Torneo
+http://localhost:8081/eventos?juego=retro
+http://localhost:8081/eventos?ciudad=Santiago
+http://localhost:8081/eventos?fecha=2026-12-12
+http://localhost:8081/eventos/1
+http://localhost:8081/actuator

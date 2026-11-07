@@ -1,0 +1,36 @@
+# --- Compilación (Maven) ---
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# --- Editores / IDE ---
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+*.swp
+
+# --- Sistema operativo ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Secretos y configuración local (nunca al repositorio) ---
+.env
+.env.*
+application-local.properties
+*.p12
+*.jks
+*.pem
+*.key
+
+# --- Logs ---
+*.log
+logs/
+
+# --- ZAP: sesiones y reportes temporales ---
+*.session
+*.session.*
+zap-reports/

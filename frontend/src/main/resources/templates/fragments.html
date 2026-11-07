@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<!-- Fragmentos reutilizables: se insertan en todas las páginas con th:replace -->
+
+<head th:fragment="head(titulo)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${titulo} + ' · Eventos Gamer'">Eventos Gamer</title>
+    <link rel="stylesheet" href="../static/css/style.css" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header th:fragment="header" class="cabecera">
+    <div class="contenedor cabecera-interior">
+        <a class="logo" href="home.html" th:href="@{/}">Eventos Gamer</a>
+        <nav class="menu">
+            <a href="home.html" th:href="@{/}">Inicio</a>
+            <a href="buscar.html" th:href="@{/buscar}">Buscar</a>
+            <a sec:authorize="isAnonymous()" class="boton" href="login.html" th:href="@{/login}">Iniciar sesión</a>
+            <span sec:authorize="isAuthenticated()" class="saludo">
+                Hola, <strong sec:authentication="name">usuario</strong>
+            </span>
+            <form sec:authorize="isAuthenticated()" class="form-salir" method="post" th:action="@{/logout}">
+                <button type="submit" class="boton boton-secundario">Cerrar sesión</button>
+            </form>
+        </nav>
+    </div>
+</header>
+
+<article th:fragment="tarjeta(e)" class="tarjeta">
+    <img src="../static/img/evento-1.jpg" th:src="@{/img/{img}(img=${e.imagen})}"
+         th:alt="${'Imagen de ' + e.nombre}" alt="Imagen del evento" width="800" height="450">
+    <div class="tarjeta-cuerpo">
+        <p class="etiqueta" th:text="${e.categoria}">Torneo</p>
+        <h3 th:text="${e.nombre}">Nombre del evento</h3>
+        <p class="dato" th:text="${#temporals.format(e.fechaHora, 'dd/MM/yyyy HH:mm')} + ' · ' + ${e.ciudad}">12/12/2026 15:00 · Santiago</p>
+        <p class="dato" th:text="${e.juego}">Juego</p>
+        <a class="boton" href="evento.html" th:href="@{/eventos/{id}(id=${e.id})}">Ver detalle</a>
+        <small sec:authorize="isAnonymous()" class="nota">Requiere iniciar sesión</small>
+    </div>
+</article>
+
+<footer th:fragment="footer" class="pie">
+    <div class="contenedor">
+        <p>Eventos Gamer · Proyecto académico ISY2202 Seguridad y Calidad en el Desarrollo de Software</p>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Buscar')}">
+    <meta charset="UTF-8">
+    <title>Buscar · Eventos Gamer</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+
+<main class="contenedor">
+
+    <h1>Buscar eventos</h1>
+
+    <form class="filtros" method="get" action="#" th:action="@{/buscar}">
+        <label>Nombre
+            <input type="text" name="nombre" maxlength="100" th:value="${nombre}">
+        </label>
+        <label>Categoría
+            <select name="categoria">
+                <option value="">Todas</option>
+                <option th:each="c : ${categorias}" th:value="${c}" th:text="${c}"
+                        th:selected="${c == categoria}">Torneo</option>
+            </select>
+        </label>
+        <label>Juego
+            <input type="text" name="juego" maxlength="80" th:value="${juego}">
+        </label>
+        <label>Ciudad
+            <input type="text" name="ciudad" maxlength="60" th:value="${ciudad}">
+        </label>
+        <label>Fecha
+            <input type="date" name="fecha" th:value="${fecha}">
+        </label>
+        <div class="filtros-acciones">
+            <button type="submit" class="boton">Buscar</button>
+            <a class="boton boton-secundario" href="buscar.html" th:href="@{/buscar}">Limpiar</a>
+        </div>
+    </form>
+
+    <section class="seccion">
+        <h2 th:text="${#lists.size(eventos)} + ' evento(s) encontrado(s)'">4 evento(s) encontrado(s)</h2>
+        <div class="grilla">
+            <th:block th:each="e : ${eventos}">
+                <article th:replace="~{fragments :: tarjeta(${e})}"></article>
+            </th:block>
+        </div>
+        <p th:if="${#lists.isEmpty(eventos)}" class="vacio">No se encontraron eventos con esos filtros.</p>
+    </section>
+
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${evento.nombre})}">
+    <meta charset="UTF-8">
+    <title>Evento · Eventos Gamer</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+
+<main class="contenedor" th:object="${evento}">
+
+    <p><a href="buscar.html" th:href="@{/buscar}">&larr; Volver a la búsqueda</a></p>
+
+    <article class="detalle">
+        <img class="detalle-imagen" src="../static/img/evento-1.jpg" th:src="@{/img/{img}(img=*{imagen})}"
+             th:alt="*{'Imagen de ' + nombre}" alt="Imagen del evento" width="800" height="450">
+
+        <div class="detalle-cuerpo">
+            <p class="etiqueta" th:text="*{categoria}">Torneo</p>
+            <h1 th:text="*{nombre}">Nombre del evento</h1>
+
+            <dl class="datos">
+                <dt>Fecha y hora</dt>
+                <dd th:text="${#temporals.format(evento.fechaHora, 'dd/MM/yyyy HH:mm')}">12/12/2026 15:00</dd>
+                <dt>Juego</dt>
+                <dd th:text="*{juego}">Juego</dd>
+                <dt>Ciudad</dt>
+                <dd th:text="*{ciudad}">Santiago</dd>
+                <dt>Dirección</dt>
+                <dd th:text="*{direccion}">Dirección</dd>
+                <dt>Organizadores</dt>
+                <dd th:text="*{organizadores}">Organizadores</dd>
+                <dt>Expositores</dt>
+                <dd th:text="*{expositores}">Expositores</dd>
+            </dl>
+
+            <h2>Descripción</h2>
+            <p th:text="*{descripcion}">Descripción del evento.</p>
+
+            <h2>Servicios disponibles</h2>
+            <ul class="servicios">
+                <li>Estacionamiento: <strong th:text="*{estacionamiento} ? 'Sí' : 'No'"
+                                             th:classappend="*{estacionamiento} ? 'si' : 'no'">Sí</strong></li>
+                <li>Locomoción colectiva: <strong th:text="*{locomocion} ? 'Sí' : 'No'"
+                                                  th:classappend="*{locomocion} ? 'si' : 'no'">Sí</strong></li>
+                <li>Servicio de comidas: <strong th:text="*{comida} ? 'Sí' : 'No'"
+                                                 th:classappend="*{comida} ? 'si' : 'no'">Sí</strong></li>
+                <li>Alojamiento: <strong th:text="*{alojamiento} ? 'Sí' : 'No'"
+                                         th:classappend="*{alojamiento} ? 'si' : 'no'">No</strong></li>
+            </ul>
+        </div>
+    </article>
+
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>
