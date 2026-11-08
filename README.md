@@ -39,32 +39,30 @@ El script crea la base `gamer_eventos`, las tablas `usuario` y `evento`, y un
 usuario de MySQL solo para la aplicación (`gamer_app`, con permiso únicamente de
 lectura). Se puede ejecutar de nuevo cuando quieras: deja los datos como al inicio.
 
-## 2. Clave secreta para el JWT
-
-En PowerShell, genera una clave aleatoria y cópiala:
-
-```powershell
-$b = New-Object byte[] 48; [Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($b); [Convert]::ToBase64String($b)
-```
-
-## 3. Levantar el backend (puerto 8081)
+## 2. Levantar el backend (puerto 8081)
 
 Abre una ventana de PowerShell:
 
 ```powershell
 cd <ruta>\gamer-eventos\backend
-$env:DB_PASSWORD = "GamerApp-Demo-2026"
-$env:JWT_SECRET  = "<pega aquí la clave del paso 2>"
 .\mvnw.cmd spring-boot:run
 ```
 
 Cuando aparezca `Started BackendApplication`, abre <http://localhost:8081/eventos>:
 debe mostrar los 4 eventos en formato JSON.
 
-> Las variables `$env:` solo duran mientras esa ventana esté abierta. Si cierras
-> PowerShell, vuelve a definirlas antes de ejecutar.
+No hay que configurar nada más:
 
-## 4. Levantar el frontend (puerto 8080)
+- **Contraseña de MySQL:** está en el archivo externo `backend/config/application.properties`
+  (fuera del código fuente), que Spring Boot lee automáticamente al ejecutar desde
+  la carpeta `backend`. Si cambias la contraseña en el script SQL, cámbiala también ahí.
+- **Clave del JWT:** se genera aleatoriamente cada vez que arranca el backend y
+  solo existe en memoria. Por eso, si reinicias el backend, debes volver a iniciar sesión.
+
+> Si ejecutas desde un IDE (IntelliJ, VS Code), el directorio de trabajo debe ser
+> la carpeta `backend`, para que encuentre `config/application.properties`.
+
+## 3. Levantar el frontend (puerto 8080)
 
 Abre **otra** ventana de PowerShell (el backend debe seguir corriendo):
 
@@ -134,9 +132,8 @@ Recomendación: menos de 300 KB por imagen. Reinicia el frontend después de cam
 
 | Mensaje | Solución |
 |---------|----------|
-| `Could not resolve placeholder 'DB_PASSWORD'` o `'JWT_SECRET'` | Faltan las variables `$env:` en esa ventana de PowerShell (paso 3). |
-| `JWT_SECRET debe tener al menos 32 caracteres` | Usa la clave generada en el paso 2. |
-| `Access denied for user 'gamer_app'@'localhost'` | Vuelve a ejecutar el script SQL y revisa que `DB_PASSWORD` coincida con la del script. |
+| `Could not resolve placeholder 'DB_PASSWORD'` | El backend no encontró `config/application.properties`: ejecútalo desde la carpeta `backend`. |
+| `Access denied for user 'gamer_app'@'localhost'` | La contraseña de `backend/config/application.properties` no coincide con la del script SQL. Corrígela y vuelve a ejecutar el script. |
 | `Port 8080 was already in use` | Otro programa usa el puerto (por ejemplo ZAP). Ver `docs/ZAP.md`. |
 | `Schema-validation: wrong column type` | Avísame el mensaje completo (diferencia entre la tabla y el código). |
 | `JAVA_HOME not found` | Instala Java 17 y verifica `java -version`. |

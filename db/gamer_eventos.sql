@@ -24,11 +24,11 @@ USE gamer_eventos;
 -- 2. Usuario de MySQL exclusivo para la aplicación (mínimo privilegio)
 --    La aplicación solo lee datos, por lo que solo recibe SELECT sobre
 --    esta base. No se usa root desde la aplicación.
---    Contraseña de DEMO: cámbiala si quieres, pero debe coincidir con la
---    variable de entorno DB_PASSWORD del backend.
+--    Contraseña de DEMO: cámbiala si quieres, pero debe coincidir con la del
+--    archivo backend/config/application.properties.
 -- ---------------------------------------------------------------------
 DROP USER IF EXISTS 'gamer_app'@'localhost';
-CREATE USER 'gamer_app'@'localhost' IDENTIFIED BY 'GamerApp-Demo-2026';
+CREATE USER 'gamer_app'@'localhost' IDENTIFIED BY 'GamerApp2026';
 GRANT SELECT ON gamer_eventos.* TO 'gamer_app'@'localhost';
 FLUSH PRIVILEGES;
 

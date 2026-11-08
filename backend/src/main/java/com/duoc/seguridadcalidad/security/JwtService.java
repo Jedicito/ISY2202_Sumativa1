@@ -1,6 +1,5 @@
 package com.duoc.seguridadcalidad.security;
 
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -13,22 +12,22 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 
-/** Genera y valida los tokens JWT firmados con HMAC-SHA256. */
+/**
+ * Genera y valida los tokens JWT firmados con HMAC-SHA256.
+ *
+ * La clave de firma se genera de forma aleatoria (SecureRandom, 256 bits) cada
+ * vez que arranca el backend y solo existe en memoria: no queda escrita en el
+ * código, en archivos ni en variables de entorno. Al reiniciar el backend los
+ * tokens anteriores dejan de ser válidos y se debe iniciar sesión de nuevo.
+ */
 @Service
 public class JwtService {
 
-    private final SecretKey clave;
+    private final SecretKey clave = Jwts.SIG.HS256.key().build();
     private final long minutosExpiracion;
 
-    public JwtService(@Value("${jwt.secret}") String secreto,
-                      @Value("${jwt.expiration-minutes}") long minutosExpiracion) {
-        byte[] bytes = secreto.getBytes(StandardCharsets.UTF_8);
-        if (bytes.length < 32) {
-            throw new IllegalStateException("JWT_SECRET debe tener al menos 32 caracteres");
-        }
-        this.clave = Keys.hmacShaKeyFor(bytes);
+    public JwtService(@Value("${jwt.expiration-minutes}") long minutosExpiracion) {
         this.minutosExpiracion = minutosExpiracion;
     }
 
