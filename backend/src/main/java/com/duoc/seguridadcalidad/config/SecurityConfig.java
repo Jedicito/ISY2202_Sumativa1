@@ -35,8 +35,8 @@ public class SecurityConfig {
                 // APIs públicas
                 .requestMatchers(HttpMethod.POST, "/login").permitAll()
                 .requestMatchers(HttpMethod.GET, "/eventos").permitAll()
-                // Monitoreo de la aplicación durante el desarrollo
-                .requestMatchers("/actuator/**").permitAll()
+                // Monitoreo: solo administradores autenticados con JWT
+                .requestMatchers("/actuator/**").hasRole("ADMIN")
                 .requestMatchers("/error").permitAll()
                 // Todo lo demás requiere token (ej. GET /eventos/{id})
                 .anyRequest().authenticated()

@@ -131,6 +131,8 @@ input, select {
 .mensaje { padding: 10px 12px; border-radius: 4px; border: 1px solid; }
 .mensaje-error { color: var(--error); border-color: var(--error); background: #fdf0ef; }
 .mensaje-exito { color: var(--exito); border-color: var(--exito); background: #eef7f0; }
+.mensaje-aviso { color: var(--enlace); border-color: var(--enlace); background: #eef3fa; }
+.filtros-aplicados { color: var(--texto-suave); margin-top: -4px; }
 
 /* Pie */
 .pie { border-top: 1px solid var(--borde); color: var(--texto-suave); font-size: .85rem; margin-top: 32px; }

@@ -100,17 +100,28 @@ Son credenciales de demostración: no las uses en otros sistemas.
 
 | Método y ruta        | Acceso            | Descripción |
 |----------------------|-------------------|-------------|
-| `POST /login`        | Pública           | Recibe `user` y `encryptedPass`; responde `Bearer <token JWT>` |
+| `POST /login`        | Pública           | Recibe `user` y `encryptedPass`; responde JSON con `token`, `username` y `roles` |
 | `GET /eventos`       | Pública           | Lista y búsqueda (`nombre`, `categoria`, `juego`, `ciudad`, `fecha=AAAA-MM-DD`) |
 | `GET /eventos/{id}`  | Privada (JWT)     | Detalle del evento. Sin token responde 401 |
+| `GET /actuator/health` | Privada (JWT, rol ADMIN) | Estado de la aplicación. Sin token de ADMIN responde 401/403 |
 
 ## Prueba rápida
 
 1. Entra a <http://localhost:8080>: se ven los eventos sin iniciar sesión.
 2. Ve a **Buscar** y filtra, por ejemplo, por categoría *Torneo*.
 3. Haz clic en **Ver detalle**: te lleva al login.
-4. Ingresa con `jugador1`: vuelves directo al detalle del evento.
-5. **Cerrar sesión**: vuelves al login con el mensaje de sesión cerrada.
+4. Ingresa con una contraseña incorrecta: aparece "Usuario o contraseña incorrectos".
+5. Ingresa con `jugador1`: vuelves directo al detalle del evento.
+6. **Cerrar sesión**: vuelves al login con el mensaje de sesión cerrada.
+
+## Versiones
+
+| Marca en git    | Descripción |
+|-----------------|-------------|
+| `v1-vulnerable` | Versión analizada en el primer escaneo de ZAP |
+| `v2-segura`     | Versión con las correcciones de los hallazgos de ZAP y de la revisión del código |
+
+Para ver las diferencias entre ambas: `git diff v1-vulnerable v2-segura`
 
 ---
 
@@ -137,4 +148,5 @@ Recomendación: menos de 300 KB por imagen. Reinicia el frontend después de cam
 | `Port 8080 was already in use` | Otro programa usa el puerto (por ejemplo ZAP). Ver `docs/ZAP.md`. |
 | `Schema-validation: wrong column type` | Avísame el mensaje completo (diferencia entre la tabla y el código). |
 | `JAVA_HOME not found` | Instala Java 17 y verifica `java -version`. |
-| Error 500 en el frontend | Revisa que el backend esté corriendo en la otra ventana. |
+| "El servicio no está disponible" al iniciar sesión | Revisa que el backend esté corriendo en la otra ventana. |
+| "Tu sesión expiró" | Se reinició el backend o pasaron 60 minutos: vuelve a iniciar sesión. |

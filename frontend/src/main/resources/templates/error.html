@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Error')}">
+    <meta charset="UTF-8">
+    <title>Error · Eventos Gamer</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body>
+<header th:replace="~{fragments :: header}"></header>
+
+<!-- Página de error propia: no muestra detalles técnicos (excepciones, rutas, versiones). -->
+<main class="contenedor">
+    <section class="caja-login">
+        <th:block th:if="${status == 404}">
+            <h1>Página no encontrada</h1>
+            <p>La página que buscas no existe.</p>
+        </th:block>
+        <th:block th:if="${status == 403}">
+            <h1>Acceso no permitido</h1>
+            <p>No tienes permiso para ver esta página.</p>
+        </th:block>
+        <th:block th:unless="${status == 404 or status == 403}">
+            <h1>No pudimos completar la solicitud</h1>
+            <p>Intenta nuevamente en unos minutos.</p>
+        </th:block>
+        <p><a class="boton" href="home.html" th:href="@{/}">Volver al inicio</a></p>
+    </section>
+</main>
+
+<footer th:replace="~{fragments :: footer}"></footer>
+</body>
+</html>

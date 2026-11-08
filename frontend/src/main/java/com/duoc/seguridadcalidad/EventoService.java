@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 /** Llamadas a la capa backend. */
@@ -42,18 +45,26 @@ public class EventoService {
         return eventos == null ? List.of() : Arrays.asList(eventos);
     }
 
-    /** API privada: detalle de un evento, enviando el token JWT del login. */
+    /** API privada: detalle de un evento, enviando el token JWT de la sesión del usuario. */
     public EventoDetalle detalle(Long id) {
-        String url = backendUrl + "/eventos/" + id;
         String token = tokenStore.getToken();
+        if (token == null) {
+            throw new SesionExpiradaException();
+        }
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", token);
+        headers.setBearerAuth(token);
         HttpEntity<Void> entity = new HttpEntity<Void>(headers);
 
-        ResponseEntity<EventoDetalle> response =
-                restTemplate.exchange(url, HttpMethod.GET, entity, EventoDetalle.class);
-        return response.getBody();
+        try {
+            ResponseEntity<EventoDetalle> response = restTemplate.exchange(
+                    backendUrl + "/eventos/" + id, HttpMethod.GET, entity, EventoDetalle.class);
+            return response.getBody();
+        } catch (HttpClientErrorException.Unauthorized e) {
+            throw new SesionExpiradaException();
+        } catch (HttpClientErrorException.NotFound e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
     private static void agregar(UriComponentsBuilder uri, String nombre, String valor) {

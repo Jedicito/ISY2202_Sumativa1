@@ -30,7 +30,7 @@ public interface EventoRepository extends JpaRepository<Evento, Long>, JpaSpecif
                 filtros.add(cb.like(root.<String>get("nombre"), "%" + nombre.trim() + "%"));
             }
             if (StringUtils.hasText(categoria)) {
-                filtros.add(cb.equal(root.get("categoria"), categoria.trim()));
+                filtros.add(cb.like(root.<String>get("categoria"), "%" + categoria.trim() + "%"));
             }
             if (StringUtils.hasText(juego)) {
                 filtros.add(cb.like(root.<String>get("juego"), "%" + juego.trim() + "%"));

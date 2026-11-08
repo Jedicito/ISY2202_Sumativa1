@@ -14,23 +14,19 @@
 
     <form class="filtros" method="get" action="#" th:action="@{/buscar}">
         <label>Nombre
-            <input type="text" name="nombre" maxlength="100" th:value="${nombre}">
+            <input type="text" name="nombre" maxlength="100">
         </label>
         <label>Categoría
-            <select name="categoria">
-                <option value="">Todas</option>
-                <option th:each="c : ${categorias}" th:value="${c}" th:text="${c}"
-                        th:selected="${c == categoria}">Torneo</option>
-            </select>
+            <input type="text" name="categoria" maxlength="40" placeholder="Ej.: Torneo">
         </label>
         <label>Juego
-            <input type="text" name="juego" maxlength="80" th:value="${juego}">
+            <input type="text" name="juego" maxlength="80">
         </label>
         <label>Ciudad
-            <input type="text" name="ciudad" maxlength="60" th:value="${ciudad}">
+            <input type="text" name="ciudad" maxlength="60">
         </label>
         <label>Fecha
-            <input type="date" name="fecha" th:value="${fecha}">
+            <input type="date" name="fecha">
         </label>
         <div class="filtros-acciones">
             <button type="submit" class="boton">Buscar</button>
@@ -40,6 +36,9 @@
 
     <section class="seccion">
         <h2 th:text="${#lists.size(eventos)} + ' evento(s) encontrado(s)'">4 evento(s) encontrado(s)</h2>
+        <p th:unless="${#lists.isEmpty(filtros)}" class="filtros-aplicados">
+            Filtros: <span th:text="${#strings.listJoin(filtros, ' · ')}">Ciudad: Santiago</span>
+        </p>
         <div class="grilla">
             <th:block th:each="e : ${eventos}">
                 <article th:replace="~{fragments :: tarjeta(${e})}"></article>
