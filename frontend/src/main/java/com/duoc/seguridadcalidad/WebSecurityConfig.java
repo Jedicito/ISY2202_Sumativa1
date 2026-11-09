@@ -50,7 +50,9 @@ public class WebSecurityConfig {
                 .permitAll()
             )
             .logout((logout) -> logout.permitAll())
-            .requestCache((cache) -> cache.requestCache(requestCache));
+            .requestCache((cache) -> cache.requestCache(requestCache))
+            .headers((headers) -> headers.contentSecurityPolicy((csp) -> csp.policyDirectives(
+                "default-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'")));
 
         return http.build();
     }
